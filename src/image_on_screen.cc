@@ -19,18 +19,31 @@ int main(int argc, char *argv[]) {
 		return -1;
 	}
 
-	// Apply image onto window
-	// SDL_BlitSurface(src surface, relevant later, dest surface, relevant later)
-	SDL_BlitSurface(img_surface, NULL, win_surface, NULL);
-
-	SDL_UpdateWindowSurface(window);
-
+	/*
+	 * This segment is covered more extensively in lesson 3. SDL_Event is a 
+	 * union containing information regarding some SDL event 
+	 * (key press, mouse move, etc.)
+	 */
 	SDL_Event e;
 	bool quit = false;
+	/*
+	 * This loop is called the main loop/game loop and it continues to run
+	 * until the game is finished/quit out of. 
+	 * SDL_PollEvent processes the most recent events from the event queue.
+	 * Continues to process events until the queue is empty when it returns 0
+	 * and the inner loop breaks. However, the main loop won't terminate until
+	 * one of those events is a quit out event.
+	 */
 	while (quit == false) {
 		while (SDL_PollEvent(&e)) {
 			if (e.type == SDL_QUIT) quit = true;
 		}
+
+		// Apply image onto window
+		// SDL_BlitSurface(src surface, relevant later, dest surface, relevant later)
+		SDL_BlitSurface(img_surface, NULL, win_surface, NULL);
+
+		SDL_UpdateWindowSurface(window);
 	}
 
 	closeSDL(&window, &img_surface);
