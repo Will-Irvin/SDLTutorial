@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
 		return -1;
 	}
 
-	SDL_Surface* curr_surface = direction_surfaces[KEY_PRESS_SURFACE_DEFAULT];;
+	SDL_Surface* curr_surface = direction_surfaces[KEY_PRESS_SURFACE_DEFAULT];
 	
 	// Game Loop
 	SDL_Event e;

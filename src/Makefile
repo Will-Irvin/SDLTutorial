@@ -4,8 +4,9 @@ LINKER= -lSDL2
 TUT1= hello_SDL
 TUT2= image_on_screen
 TUT4= key_presses
+TUT5= opt_surface_and_stretching
 
-all: $(TUT1) $(TUT2) $(TUT4)
+all: $(TUT1) $(TUT2) $(TUT4) $(TUT5)
 
 $(TUT1): $(TUT1).cc
 	$(CC) $(CCFLAGS) $(TUT1).cc $(LINKER) -o $(TUT1)
@@ -15,3 +16,6 @@ $(TUT2): $(TUT2).cc
 
 $(TUT4): $(TUT4).cc
 	$(CC) $(CCFLAGS) $(TUT4).cc $(LINKER) -o $(TUT4)
+
+$(TUT5): $(TUT5).cc
+	$(CC) $(CCFLAGS) $(TUT5).cc $(LINKER) -o $(TUT5)
