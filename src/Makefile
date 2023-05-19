@@ -7,8 +7,9 @@ TUT4= key_presses
 TUT5= opt_surface_and_stretching
 TUT6= load_other_image
 TUT7= textures
+TUT8= geometry
 
-TUTALL= $(TUT1) $(TUT2) $(TUT4) $(TUT5) $(TUT6) $(TUT7)
+TUTALL= $(TUT1) $(TUT2) $(TUT4) $(TUT5) $(TUT6) $(TUT7) $(TUT8)
 
 all: $(TUTALL)
 
@@ -29,6 +30,10 @@ $(TUT6): $(TUT6).cc
 
 $(TUT7): $(TUT7).cc
 	$(CC) $(CCFLAGS) $(TUT7).cc $(LINKER) -o $(TUT7)
+
+$(TUT8): $(TUT8).cc
+	$(CC) $(CCFLAGS) $(TUT8).cc $(LINKER) -o $(TUT8)
+
 
 clean:
 	rm $(TUTALL)
