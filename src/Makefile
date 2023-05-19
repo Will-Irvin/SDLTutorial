@@ -6,8 +6,11 @@ TUT2= image_on_screen
 TUT4= key_presses
 TUT5= opt_surface_and_stretching
 TUT6= load_other_image
+TUT7= textures
 
-all: $(TUT1) $(TUT2) $(TUT4) $(TUT5) $(TUT6)
+TUTALL= $(TUT1) $(TUT2) $(TUT4) $(TUT5) $(TUT6) $(TUT7)
+
+all: $(TUTALL)
 
 $(TUT1): $(TUT1).cc
 	$(CC) $(CCFLAGS) $(TUT1).cc $(LINKER) -o $(TUT1)
@@ -23,3 +26,9 @@ $(TUT5): $(TUT5).cc
 
 $(TUT6): $(TUT6).cc
 	$(CC) $(CCFLAGS) $(TUT6).cc $(LINKER) -o $(TUT6)
+
+$(TUT7): $(TUT7).cc
+	$(CC) $(CCFLAGS) $(TUT7).cc $(LINKER) -o $(TUT7)
+
+clean:
+	rm $(TUTALL)

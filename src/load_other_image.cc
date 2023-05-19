@@ -112,6 +112,7 @@ void closeSDL(SDL_Window** window_ptr, SDL_Surface** surfaces, int num_surfaces)
 	*window_ptr = NULL;
 
 	SDL_Quit();
+	IMG_Quit();
 }
 
 /**
