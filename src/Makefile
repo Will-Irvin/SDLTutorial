@@ -55,4 +55,4 @@ $(LTEXT).o: $(LTEXT).cc
 	$(CC) $(CCFLAGS) $(LTEXT).cc -c
 
 clean:
-	rm $(TUTALL)
+	rm $(TUTALL) $(TUT11).o $(LTEXT).o
