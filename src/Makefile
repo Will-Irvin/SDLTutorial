@@ -14,8 +14,9 @@ TUT9= viewport
 TUT10= color_key
 TUT11= clips_and_sprites
 TUT12= color_mod
+TUT13= alpha_blending
 
-TUTALL= $(TUT1) $(TUT2) $(TUT4) $(TUT5) $(TUT6) $(TUT7) $(TUT8) $(TUT9) $(TUT10) $(TUT11) $(TUT12)
+TUTALL= $(TUT1) $(TUT2) $(TUT4) $(TUT5) $(TUT6) $(TUT7) $(TUT8) $(TUT9) $(TUT10) $(TUT11) $(TUT12) $(TUT13)
 
 all: $(TUTALL)
 
@@ -58,8 +59,14 @@ $(TUT12): $(TUT12).o $(LTEXT).o
 $(TUT12).o: $(TUT12).cc
 	$(CC) $(CCFLAGS) $(TUT12).cc -c
 
+$(TUT13): $(TUT13).o $(LTEXT).o
+	$(CC) $(CCFLAGS) $(TUT13).o $(LTEXT).o $(LINKER) -o $(TUT13)
+
+$(TUT13).o: $(TUT13).cc
+	$(CC) $(CCFLAGS) $(TUT13).cc -c
+
 $(LTEXT).o: $(LTEXT).cc
 	$(CC) $(CCFLAGS) $(LTEXT).cc -c
 
 clean:
-	rm $(TUTALL) $(TUT11).o $(TUT12).o $(LTEXT).o
+	rm $(TUTALL) $(TUT11).o $(TUT12).o $(TUT13).o $(LTEXT).o

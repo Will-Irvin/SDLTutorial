@@ -70,11 +70,20 @@ void LTexture::setColor(Uint8 red, Uint8 green, Uint8 blue) {
 	SDL_SetTextureColorMod(mTexture, red, green, blue);
 }
 
+void LTexture::setBlendMode(SDL_BlendMode blending) {
+	SDL_SetTextureBlendMode(mTexture, blending);
+}
+
+// Works similar to color but for alpha value
+void LTexture::setAlpha(Uint8 alpha) {
+	SDL_SetTextureAlphaMod(mTexture, alpha);
+}
+
 /**
  * Set rectangle space and render
  * If clip is specified use those dimensions instead of the default
  */
-void LTexture::render(SDL_Renderer* renderer, int x, int y, SDL_Rect* clip = NULL) {
+void LTexture::render(SDL_Renderer* renderer, int x, int y, SDL_Rect* clip) {
 	SDL_Rect rect = {x, y, mWidth, mHeight};
 	if (clip != NULL) {
 		rect.w = clip->w;

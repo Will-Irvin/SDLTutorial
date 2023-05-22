@@ -16,7 +16,11 @@ class LTexture {
 
 		void free(); // Deallocate texture
 
-		void setColor(Uint8 red, Uint8 green, Uint8 blue); // Set color modulation
+		void setColor(Uint8, Uint8, Uint8); // Set color modulation
+
+		void setBlendMode(SDL_BlendMode); // Set blending
+		
+		void setAlpha(Uint8 alpha); // Set alpha modulation
 
 		void render(SDL_Renderer*, int, int, SDL_Rect* = NULL); // Render at given point
 
