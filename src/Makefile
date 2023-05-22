@@ -13,8 +13,9 @@ TUT8= geometry
 TUT9= viewport
 TUT10= color_key
 TUT11= clips_and_sprites
+TUT12= color_mod
 
-TUTALL= $(TUT1) $(TUT2) $(TUT4) $(TUT5) $(TUT6) $(TUT7) $(TUT8) $(TUT9) $(TUT10) $(TUT11)
+TUTALL= $(TUT1) $(TUT2) $(TUT4) $(TUT5) $(TUT6) $(TUT7) $(TUT8) $(TUT9) $(TUT10) $(TUT11) $(TUT12)
 
 all: $(TUTALL)
 
@@ -51,8 +52,14 @@ $(TUT11): $(TUT11).o $(LTEXT).o
 $(TUT11).o: $(TUT11).cc
 	$(CC) $(CCFLAGS) $(TUT11).cc -c
 
+$(TUT12): $(TUT12).o $(LTEXT).o
+	$(CC) $(CCFLAGS) $(TUT12).o $(LTEXT).o $(LINKER) -o $(TUT12)
+
+$(TUT12).o: $(TUT12).cc
+	$(CC) $(CCFLAGS) $(TUT12).cc -c
+
 $(LTEXT).o: $(LTEXT).cc
 	$(CC) $(CCFLAGS) $(LTEXT).cc -c
 
 clean:
-	rm $(TUTALL) $(TUT11).o $(LTEXT).o
+	rm $(TUTALL) $(TUT11).o $(TUT12).o $(LTEXT).o

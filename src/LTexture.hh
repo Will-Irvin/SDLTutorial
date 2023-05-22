@@ -1,3 +1,7 @@
+#ifndef LTEXTURE
+
+#define LTEXTURE
+
 #include <SDL2/SDL.h>
 #include <string>
 
@@ -12,7 +16,9 @@ class LTexture {
 
 		void free(); // Deallocate texture
 
-		void render(SDL_Renderer*, int, int, SDL_Rect*); // Render at given point
+		void setColor(Uint8 red, Uint8 green, Uint8 blue); // Set color modulation
+
+		void render(SDL_Renderer*, int, int, SDL_Rect* = NULL); // Render at given point
 
 		// Dimension getters
 		int getWidth();
@@ -23,3 +29,5 @@ class LTexture {
 		int mWidth;
 		int mHeight;
 };
+
+#endif

@@ -62,6 +62,15 @@ void LTexture::free() {
 }
 
 /**
+ * Multiplies a color value onto the the values that are currently displayed
+ * For example, if you give 128 (half of 255) if will half the current r, g,
+ * or b value for that color
+ */
+void LTexture::setColor(Uint8 red, Uint8 green, Uint8 blue) {
+	SDL_SetTextureColorMod(mTexture, red, green, blue);
+}
+
+/**
  * Set rectangle space and render
  * If clip is specified use those dimensions instead of the default
  */
