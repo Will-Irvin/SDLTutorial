@@ -1,5 +1,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
+
 #include "LTexture.hh"
 
 #include <string>
@@ -51,6 +53,33 @@ bool LTexture::loadFromFile(std::string path, SDL_Renderer* renderer) {
 	return true;
 }
 
+/**
+ * Create a texture based on TTF using the passed in text, color, and font
+ */
+bool LTexture::loadFromRenderedText(std::string text, SDL_Color color, 
+																		SDL_Renderer* renderer, TTF_Font* font) {
+	free();
+
+	// Generate surface for text using TTF method
+	// Creates based on given text, font, and color
+	SDL_Surface* textSurface = TTF_RenderText_Solid(font, text.c_str(), color);
+	if (textSurface == NULL) {
+		std::cout << "Text Surface Creation Error: " << TTF_GetError() << '\n';
+		return false;
+	}
+
+	mTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+	if (mTexture == NULL) {
+		std::cout << "Text Texture Creation Error: " << SDL_GetError() << '\n';
+		return false;
+	}
+
+	mWidth = textSurface->w;
+	mHeight = textSurface->h;
+
+	SDL_FreeSurface(textSurface);
+	return true;
+}
 // Free any memory associated with the texture if it exists
 void LTexture::free() {
 	if (mTexture != NULL) {
@@ -82,15 +111,20 @@ void LTexture::setAlpha(Uint8 alpha) {
 /**
  * Set rectangle space and render
  * If clip is specified use those dimensions instead of the default
+ * If angle and center are given, rotate texture the specified angle over the
+ * given central point.
+ * If a renderer flip structure is given, flip the image as specified
  */
-void LTexture::render(SDL_Renderer* renderer, int x, int y, SDL_Rect* clip) {
+void LTexture::render(SDL_Renderer* renderer, int x, int y, SDL_Rect* clip,
+											double angle, SDL_Point* center, SDL_RendererFlip flip) {
 	SDL_Rect rect = {x, y, mWidth, mHeight};
 	if (clip != NULL) {
 		rect.w = clip->w;
 		rect.h = clip->h;
 	}
 	// Use clip rectangle as source rectangle to get particular portion of the image
-	SDL_RenderCopy(renderer, mTexture, clip, &rect);
+	// Use RenderCopyEx to rotate the given angle/center/flip as needed
+	SDL_RenderCopyEx(renderer, mTexture, clip, &rect, angle, center, flip);
 }
 
 // Dimension getters

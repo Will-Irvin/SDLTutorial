@@ -1,6 +1,6 @@
 CC= g++
 CCFLAGS= -g -std=c++17 -Wall -Werror
-LINKER= -lSDL2 -lSDL2_image
+LINKER= -lSDL2 -lSDL2_image -lSDL2_ttf
 LTEXT= LTexture
 
 TUT1= hello_SDL
@@ -16,8 +16,10 @@ TUT11= clips_and_sprites
 TUT12= color_mod
 TUT13= alpha_blending
 TUT14= animation
+TUT15= rotate
+TUT16= ttf_text
 
-TUTALL= $(TUT1) $(TUT2) $(TUT4) $(TUT5) $(TUT6) $(TUT7) $(TUT8) $(TUT9) $(TUT10) $(TUT11) $(TUT12) $(TUT13) $(TUT14)
+TUTALL= $(TUT1) $(TUT2) $(TUT4) $(TUT5) $(TUT6) $(TUT7) $(TUT8) $(TUT9) $(TUT10) $(TUT11) $(TUT12) $(TUT13) $(TUT14) $(TUT15) $(TUT16)
 
 all: $(TUTALL)
 
@@ -72,8 +74,20 @@ $(TUT14): $(TUT14).o $(LTEXT).o
 $(TUT14).o: $(TUT14).cc
 	$(CC) $(CCFLAGS) $(TUT14).cc -c
 
+$(TUT15): $(TUT15).o $(LTEXT).o
+	$(CC) $(CCFLAGS) $(TUT15).o $(LTEXT).o $(LINKER) -o $(TUT15)
+
+$(TUT15).o: $(TUT15).cc
+	$(CC) $(CCFLAGS) $(TUT15).cc -c
+
+$(TUT16): $(TUT16).o $(LTEXT).o
+	$(CC) $(CCFLAGS) $(TUT16).o $(LTEXT).o $(LINKER) -o $(TUT16)
+
+$(TUT16).o: $(TUT16).cc
+	$(CC) $(CCFLAGS) $(TUT16).cc -c
+
 $(LTEXT).o: $(LTEXT).cc
 	$(CC) $(CCFLAGS) $(LTEXT).cc -c
 
 clean:
-	rm $(TUTALL) $(TUT11).o $(TUT12).o $(TUT13).o $(TUT14).o $(LTEXT).o
+	rm $(TUTALL) $(TUT11).o $(TUT12).o $(TUT13).o $(TUT14).o $(TUT15).o $(TUT16).o $(LTEXT).o

@@ -117,7 +117,7 @@ int main(int argc, char** argv) {
 		SDL_RenderClear(renderer);
 
 		// Render to each corner of the screen using the appropriate clip rectangle
-		spriteSheetTexture.render(renderer, 0, 0, spriteClips);
+		spriteSheetTexture.render(renderer, 0, 0, spriteClips, 0, NULL, SDL_FLIP_NONE);
 		spriteSheetTexture.render(renderer, SCREEN_WIDTH - spriteClips[1].w, 0, 
 															spriteClips + 1);
 		spriteSheetTexture.render(renderer, 0, SCREEN_HEIGHT - spriteClips[2].h, spriteClips + 2);
