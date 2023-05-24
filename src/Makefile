@@ -19,8 +19,9 @@ TUT14= animation
 TUT15= rotate
 TUT16= ttf_text
 TUT17= mouse
+TUT18= key_state
 
-TUTALL= $(TUT1) $(TUT2) $(TUT4) $(TUT5) $(TUT6) $(TUT7) $(TUT8) $(TUT9) $(TUT10) $(TUT11) $(TUT12) $(TUT13) $(TUT14) $(TUT15) $(TUT16) $(TUT17)
+TUTALL= $(TUT1) $(TUT2) $(TUT4) $(TUT5) $(TUT6) $(TUT7) $(TUT8) $(TUT9) $(TUT10) $(TUT11) $(TUT12) $(TUT13) $(TUT14) $(TUT15) $(TUT16) $(TUT17) $(TUT18)
 
 all: $(TUTALL)
 
@@ -93,8 +94,15 @@ $(TUT17): $(TUT17).o $(LTEXT).o
 $(TUT17).o: $(TUT17).cc
 	$(CC) $(CCFLAGS) $(TUT17).cc -c
 
+$(TUT18): $(TUT18).o $(LTEXT).o
+	$(CC) $(CCFLAGS) $(TUT18).o $(LTEXT).o $(LINKER) -o $(TUT18)
+
+$(TUT18).o: $(TUT18).cc
+	$(CC) $(CCFLAGS) $(TUT18).cc -c
+
 $(LTEXT).o: $(LTEXT).cc
 	$(CC) $(CCFLAGS) $(LTEXT).cc -c
 
 clean:
-	rm $(TUTALL) $(TUT11).o $(TUT12).o $(TUT13).o $(TUT14).o $(TUT15).o $(TUT16).o $(TUT17).o $(LTEXT).o
+	rm $(TUTALL) $(TUT11).o $(TUT12).o $(TUT13).o $(TUT14).o $(TUT15).o $(TUT16).o
+	rm $(TUT17).o $(TUT18).o $(LTEXT).o
