@@ -18,8 +18,9 @@ TUT13= alpha_blending
 TUT14= animation
 TUT15= rotate
 TUT16= ttf_text
+TUT17= mouse
 
-TUTALL= $(TUT1) $(TUT2) $(TUT4) $(TUT5) $(TUT6) $(TUT7) $(TUT8) $(TUT9) $(TUT10) $(TUT11) $(TUT12) $(TUT13) $(TUT14) $(TUT15) $(TUT16)
+TUTALL= $(TUT1) $(TUT2) $(TUT4) $(TUT5) $(TUT6) $(TUT7) $(TUT8) $(TUT9) $(TUT10) $(TUT11) $(TUT12) $(TUT13) $(TUT14) $(TUT15) $(TUT16) $(TUT17)
 
 all: $(TUTALL)
 
@@ -86,8 +87,14 @@ $(TUT16): $(TUT16).o $(LTEXT).o
 $(TUT16).o: $(TUT16).cc
 	$(CC) $(CCFLAGS) $(TUT16).cc -c
 
+$(TUT17): $(TUT17).o $(LTEXT).o
+	$(CC) $(CCFLAGS) $(TUT17).o $(LTEXT).o $(LINKER) -o $(TUT17)
+
+$(TUT17).o: $(TUT17).cc
+	$(CC) $(CCFLAGS) $(TUT17).cc -c
+
 $(LTEXT).o: $(LTEXT).cc
 	$(CC) $(CCFLAGS) $(LTEXT).cc -c
 
 clean:
-	rm $(TUTALL) $(TUT11).o $(TUT12).o $(TUT13).o $(TUT14).o $(TUT15).o $(TUT16).o $(LTEXT).o
+	rm $(TUTALL) $(TUT11).o $(TUT12).o $(TUT13).o $(TUT14).o $(TUT15).o $(TUT16).o $(TUT17).o $(LTEXT).o
