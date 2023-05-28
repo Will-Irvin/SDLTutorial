@@ -25,8 +25,9 @@ TUT19= joystick
 TUT21= mixer
 TUT22= timers
 TUT23= adv_timers
+TUT24= frame_rate
 
-TUTALL= $(TUT1) $(TUT2) $(TUT4) $(TUT5) $(TUT6) $(TUT7) $(TUT8) $(TUT9) $(TUT10) $(TUT11) $(TUT12) $(TUT13) $(TUT14) $(TUT15) $(TUT16) $(TUT17) $(TUT18) $(TUT19) $(TUT21) $(TUT22) $(TUT23)
+TUTALL= $(TUT1) $(TUT2) $(TUT4) $(TUT5) $(TUT6) $(TUT7) $(TUT8) $(TUT9) $(TUT10) $(TUT11) $(TUT12) $(TUT13) $(TUT14) $(TUT15) $(TUT16) $(TUT17) $(TUT18) $(TUT19) $(TUT21) $(TUT22) $(TUT23) $(TUT24)
 
 all: $(TUTALL)
 
@@ -129,6 +130,12 @@ $(TUT23): $(TUT23).o $(LTEXT).o $(LTIME).o
 $(TUT23).o: $(TUT23).cc
 	$(CC) $(CCFLAGS) $(TUT23).cc -c
 
+$(TUT24): $(TUT24).o $(LTEXT).o $(LTIME).o
+	$(CC) $(CCFLAGS) $(TUT24).o $(LTEXT).o $(LTIME).o $(LINKER) -o $(TUT24)
+
+$(TUT24).o: $(TUT24).cc
+	$(CC) $(CCFLAGS) $(TUT24).cc -c
+
 $(LTEXT).o: $(LTEXT).cc
 	$(CC) $(CCFLAGS) $(LTEXT).cc -c
 
@@ -137,5 +144,5 @@ $(LTIME).o: $(LTIME).cc
 
 clean:
 	rm $(TUTALL) $(TUT11).o $(TUT12).o $(TUT13).o $(TUT14).o $(TUT15).o $(TUT16).o
-	rm $(TUT17).o $(TUT18).o $(TUT19).o $(TUT21).o $(TUT22).o $(TUT23).o 
+	rm $(TUT17).o $(TUT18).o $(TUT19).o $(TUT21).o $(TUT22).o $(TUT23).o $(TUT24).o
 	rm $(LTIME).o $(LTEXT).o
