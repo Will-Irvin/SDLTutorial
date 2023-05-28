@@ -3,6 +3,7 @@ CCFLAGS= -g -std=c++17 -Wall -Werror
 LINKER= -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 LTEXT= LTexture
 LTIME= LTimer
+DOT= Dot
 
 TUT1= hello_SDL
 TUT2= image_on_screen
@@ -27,8 +28,9 @@ TUT22= timers
 TUT23= adv_timers
 TUT24= frame_rate
 TUT25= cap_fps
+TUT26= motion
 
-TUTALL= $(TUT1) $(TUT2) $(TUT4) $(TUT5) $(TUT6) $(TUT7) $(TUT8) $(TUT9) $(TUT10) $(TUT11) $(TUT12) $(TUT13) $(TUT14) $(TUT15) $(TUT16) $(TUT17) $(TUT18) $(TUT19) $(TUT21) $(TUT22) $(TUT23) $(TUT24) $(TUT25)
+TUTALL= $(TUT1) $(TUT2) $(TUT4) $(TUT5) $(TUT6) $(TUT7) $(TUT8) $(TUT9) $(TUT10) $(TUT11) $(TUT12) $(TUT13) $(TUT14) $(TUT15) $(TUT16) $(TUT17) $(TUT18) $(TUT19) $(TUT21) $(TUT22) $(TUT23) $(TUT24) $(TUT25) $(TUT26)
 
 all: $(TUTALL)
 
@@ -143,14 +145,23 @@ $(TUT25): $(TUT25).o $(LTEXT).o $(LTIME).o
 $(TUT25).o: $(TUT25).cc
 	$(CC) $(CCFLAGS) $(TUT25).cc -c
 
+$(TUT26): $(TUT26).o $(LTEXT).o $(DOT).o
+	$(CC) $(CCFLAGS) $(TUT26).o $(LTEXT).o $(DOT).o $(LINKER) -o $(TUT26)
+
+$(TUT26).o: $(TUT26).cc
+	$(CC) $(CCFLAGS) $(TUT26).cc -c
+
 $(LTEXT).o: $(LTEXT).cc
 	$(CC) $(CCFLAGS) $(LTEXT).cc -c
 
 $(LTIME).o: $(LTIME).cc
 	$(CC) $(CCFLAGS) $(LTIME).cc -c
 
+$(DOT).o: $(DOT).cc
+	$(CC) $(CCFLAGS) $(DOT).cc -c
+
 clean:
 	rm $(TUTALL) $(TUT11).o $(TUT12).o $(TUT13).o $(TUT14).o $(TUT15).o $(TUT16).o
 	rm $(TUT17).o $(TUT18).o $(TUT19).o $(TUT21).o $(TUT22).o $(TUT23).o $(TUT24).o
-	rm $(TUT25).o
-	rm $(LTIME).o $(LTEXT).o
+	rm $(TUT25).o $(TUT26).o
+	rm $(LTIME).o $(LTEXT).o $(DOT).o
