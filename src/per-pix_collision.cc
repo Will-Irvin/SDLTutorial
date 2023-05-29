@@ -1,0 +1,158 @@
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
+#include <string>
+#include <sstream>
+#include <cstdio>
+#include <cmath>
+#include <vector>
+#include <iostream>
+
+#include "LTexture.hh"
+#include "Dot.hh"
+
+#define SCREEN_WIDTH (640)
+#define SCREEN_HEIGHT (480)
+#define TICKS_PER_FRAME (1000 / 60)
+#define COLLISION
+
+bool init(SDL_Window**, SDL_Renderer**);
+bool loadMedia(LTexture*, SDL_Renderer*);
+void closeSDL(SDL_Window**, SDL_Renderer**, LTexture*, int);
+bool checkCollision(std::vector<SDL_Rect>, std::vector<SDL_Rect>);
+
+// Initialize SDL, Window, Renderer, Image, and TTF
+bool init(SDL_Window** window, SDL_Renderer** renderer) {
+	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+		std::cout << "Init Error: " << SDL_GetError() << '\n';
+		return false;
+	}
+	if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1")) {
+		std::cout << "Warning: Linear texture filtering not enabled\n";
+	}
+	*window = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED,
+														 SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, 
+														 SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+	if (*window == NULL) {
+		std::cout << "Window creation error: " << SDL_GetError() << '\n';
+		return false;
+	}
+
+	// PRESENT_VSYNC flag has SDL uptate at the same time as the monitor during vertical refresh
+	// Default is 60 fps
+	*renderer = SDL_CreateRenderer(*window, -1, SDL_RENDERER_ACCELERATED);
+	if (*renderer == NULL) {
+		std::cout << "Renderer creation error: " << SDL_GetError() << '\n';
+		return false;
+	}
+
+	SDL_SetRenderDrawColor(*renderer, 0xff, 0xff, 0xff, 0xff);
+
+	int imgFlags = IMG_INIT_PNG;
+	if (!(IMG_Init(imgFlags) & imgFlags)) {
+		std::cout << "SDL_Image init error: " << IMG_GetError() << '\n';
+		return false;
+	}
+
+	if (TTF_Init() == -1) {
+		std::cout << "TTF Init error: " << TTF_GetError() << '\n';
+		return false;
+	}
+	return true;
+}
+
+bool loadMedia(LTexture* texture, SDL_Renderer* renderer) {
+	*texture = LTexture();
+	if (!texture->loadFromFile("images/dot.bmp", renderer)) {
+		return false;
+	}
+
+	return true;
+}
+
+void closeSDL(SDL_Window** window, SDL_Renderer** renderer,
+							LTexture* textures, int numTextures) {
+	for (int i = 0; i < numTextures; i++) {
+		textures[i].free();
+	}
+
+	SDL_DestroyRenderer(*renderer);
+	*renderer = NULL;
+	SDL_DestroyWindow(*window);
+	*window = NULL;
+
+	SDL_Quit();
+	IMG_Quit();
+	TTF_Quit();
+}
+
+// Checks that both axises of the two rectangles do not collide with each
+// other. Returns true when they collide
+bool checkCollision(std::vector<SDL_Rect> a_rects, std::vector<SDL_Rect> b_rects) {
+	for (auto & a: a_rects) {
+		int rightA = a.x + a.w;
+		int bottomA = a.y + a.h;
+		for (auto & b: b_rects) {
+			int rightB = b.x + b.w;
+			int bottomB = b.y + b.h;
+
+			// Check if any side is inside of the collision 
+			// Opposite of previous lesson incase we can finish early
+			if (!(bottomA <= b.y || a.y >= bottomB || rightA <= b.x || rightB <= a.x)) {
+				return true;
+			}
+		}
+	}
+	return false; // No collision
+}
+
+int main(int argc, char** argv) {
+	SDL_Window* window = NULL;
+	SDL_Renderer* renderer = NULL;
+
+	LTexture texture;
+
+	if (!init(&window, &renderer)) {
+		return -1;
+	}
+	if (!loadMedia(&texture, renderer)) {
+		return -1;
+	}
+
+	SDL_Event e;
+	bool quit = false;
+	Dot dot = Dot(0, 0);;
+
+	Dot collideDot = Dot(SCREEN_WIDTH / 4, SCREEN_HEIGHT / 4); // Dot we could collide with
+
+	while (!quit) {
+		int startTime = SDL_GetTicks(); // Simple way to cap frame rate
+		while (SDL_PollEvent(&e) != 0) {
+			if (e.type == SDL_QUIT) {
+				quit = true;
+			}
+			dot.handleEvent(e);
+		}
+		dot.move(collideDot.getColliders(), checkCollision);
+
+		SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 0xff);
+		SDL_RenderClear(renderer);
+
+		dot.render(renderer, &texture); // Draw dot
+		collideDot.render(renderer, &texture);
+
+		SDL_RenderPresent(renderer);
+
+		// Simple frame cap
+		int time = SDL_GetTicks() - startTime;
+		if (time < 0) continue;
+
+		int sleepTime = TICKS_PER_FRAME - time;
+		if (sleepTime > 0) {
+			SDL_Delay(sleepTime);
+		}
+	}
+
+	closeSDL(&window, &renderer, &texture, 1);
+	return 0;
+}
