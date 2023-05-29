@@ -84,34 +84,6 @@ void closeSDL(SDL_Window** window, SDL_Renderer** renderer,
 	TTF_Quit();
 }
 
-// Checks that both axises of the two rectangles do not collide with each
-// other. Returns true when they collide
-bool checkCollision(SDL_Rect a, SDL_Rect b) {
-	int rightA = a.x + a.w;
-	int rightB = b.x + b.w;
-	int bottomA = a.y + a.h;
-	int bottomB = b.y + b.h;
-
-	// Check if any side is outside of the collision
-	if (bottomA <= b.y) { // A is over B
-		return false;
-	}
-
-	if (a.y >= bottomB) { // B is over A
-		return false;
-	}
-
-	if (rightA <= b.x) { // A is left of B
-		return false;
-	}
-
-	if (rightB <= a.x) { // B is left of A
-		return false;
-	}
-
-	return true; // All sides intersect
-}
-
 int main(int argc, char** argv) {
 	SDL_Window* window = NULL;
 	SDL_Renderer* renderer = NULL;
@@ -127,7 +99,8 @@ int main(int argc, char** argv) {
 
 	SDL_Event e;
 	bool quit = false;
-	Dot dot;
+	Dot dot = Dot(10, 10);;
+	Dot otherDot = Dot(SCREEN_WIDTH / 4 + 10, SCREEN_HEIGHT / 4 + 10);
 
 	SDL_Rect wall = {300, 40, 40, 400}; // Outline of collision wall
 
@@ -139,7 +112,7 @@ int main(int argc, char** argv) {
 			}
 			dot.handleEvent(e);
 		}
-		dot.move(wall, checkCollision);
+		dot.move(wall, otherDot.getCircularCollider());
 
 		SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 0xff);
 		SDL_RenderClear(renderer);
@@ -148,6 +121,7 @@ int main(int argc, char** argv) {
 		SDL_RenderDrawRect(renderer, &wall); // Draw wall
 	
 		dot.render(renderer, &texture); // Draw dot
+		otherDot.render(renderer, &texture);
 
 		SDL_RenderPresent(renderer);
 
