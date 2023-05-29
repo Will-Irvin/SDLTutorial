@@ -6,12 +6,17 @@
 #define SCREEN_WIDTH (640)
 #define SCREEN_HEIGHT (480)
 
+bool checkCollision(SDL_Rect, SDL_Rect);
+
 // Constructor
 Dot::Dot() {
 	mPosX = 0;
 	mPosY = 0;
 	mVelX = 0;
 	mVelY = 0;
+
+	mCollider.w = DOT_WIDTH;
+	mCollider.h = DOT_HEIGHT;
 }
 
 void Dot::handleEvent(SDL_Event& e) {
@@ -52,15 +57,39 @@ void Dot::handleEvent(SDL_Event& e) {
 	}
 }
 
+// Move freely
 void Dot::move() {
 	mPosX += mVelX;
-	if (mPosX < 0 || mPosX + DOT_WIDTH > SCREEN_WIDTH) { // Too far, move back
+	// Too far, move back
+	if (mPosX < 0 || mPosX + DOT_WIDTH > SCREEN_WIDTH) {
 		mPosX -= mVelX;
 	}
 
 	mPosY += mVelY;
 	if (mPosY < 0 || mPosY + DOT_HEIGHT > SCREEN_HEIGHT) {
 		mPosY -= mVelY;
+	}
+
+	mCollider.x = mPosX;
+	mCollider.y = mPosY;
+
+}
+
+// Move while checking that there is no collision with the given rectangle
+void Dot::move(SDL_Rect& wall, bool checkCollision(SDL_Rect, SDL_Rect)) {
+	mPosX += mVelX;
+	mCollider.x = mPosX;
+	// Too far, move back
+	if (mPosX < 0 || mPosX + DOT_WIDTH > SCREEN_WIDTH || checkCollision(mCollider, wall)) {
+		mPosX -= mVelX;
+		mCollider.x = mPosX;
+	}
+
+	mPosY += mVelY;
+	mCollider.y = mPosY;
+	if (mPosY < 0 || mPosY + DOT_HEIGHT > SCREEN_HEIGHT || checkCollision(mCollider, wall)) {
+		mPosY -= mVelY;
+		mCollider.y = mPosY;
 	}
 }
 

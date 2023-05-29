@@ -14,10 +14,12 @@ class Dot {
 		Dot();
 		void handleEvent(SDL_Event&);
 		void move();
+		void move(SDL_Rect&, bool checkCollision(SDL_Rect, SDL_Rect));
 		void render(SDL_Renderer*, LTexture*);
 
 	private:
 		// Current position and velocity
 		int mPosX, mPosY;
 		int mVelX, mVelY;
+		SDL_Rect mCollider; // Collision box
 };
