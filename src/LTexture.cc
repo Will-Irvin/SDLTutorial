@@ -36,9 +36,13 @@ bool LTexture::loadFromFile(std::string path, SDL_Renderer* renderer) {
 
 	// Color key image
 	// SetColorKey(surface, bool enable color key, pixel to color with)
-	// Original color_key tutorial maps cyan with max blue and green
-	// Adjusted to be white with everything max
-	SDL_SetColorKey(loadedSurface, SDL_TRUE, SDL_MapRGB(loadedSurface->format, 0xff, 0xff, 0xff));
+	// Original tutorials maps cyan with max blue and green
+	Uint32 color = SDL_MapRGB(loadedSurface->format, 0, 0xff, 0xff);
+	if (path.compare("images/dot.bmp") == 0) {
+		// Adjusted to be white for dot
+		color = SDL_MapRGB(loadedSurface->format, 0xff, 0xff, 0xff);
+	}
+	SDL_SetColorKey(loadedSurface, SDL_TRUE, color);
 
 	newTexture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
 	if (newTexture == NULL) {
