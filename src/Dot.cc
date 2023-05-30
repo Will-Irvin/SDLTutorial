@@ -4,6 +4,8 @@
 #include "Dot.hh"
 #include "LTexture.hh"
 
+#define LEVEL_WIDTH (1280)
+#define LEVEL_HEIGHT (960)
 #define SCREEN_WIDTH (640)
 #define SCREEN_HEIGHT (480)
 
@@ -24,6 +26,7 @@ Dot::Dot() {
 	mColliders.resize(1);
 	mColliders[0].w = DOT_WIDTH;
 	mColliders[0].h = DOT_HEIGHT;
+	mCircleCollider = {0, 0, 0};
 }
 
 Dot::Dot(int x, int y) {
@@ -79,7 +82,16 @@ Dot::Dot(int x, int y) {
 	shiftColliders();
 }
 
-// Getter for colliders
+// Getters
+
+int Dot::getPosX() {
+	return mPosX;
+}
+
+int Dot::getPosY() {
+	return mPosY;
+}
+
 std::vector<SDL_Rect>& Dot::getColliders() {
 	return mColliders;
 }
@@ -127,20 +139,33 @@ void Dot::handleEvent(SDL_Event& e) {
 }
 
 // Move freely
-void Dot::move() {
-	mPosX += mVelX;
-	// Too far, move back
-	if (mPosX < 0 || mPosX + DOT_WIDTH > SCREEN_WIDTH) {
-		mPosX -= mVelX;
-	}
+void Dot::move(bool level) {
+	if (level) { // Stay in bounds of level
+		mPosX += mVelX;
 
-	mPosY += mVelY;
-	if (mPosY < 0 || mPosY + DOT_HEIGHT > SCREEN_HEIGHT) {
-		mPosY -= mVelY;
-	}
+		if (mPosX < 0 || mPosX + DOT_WIDTH > LEVEL_WIDTH) {
+			mPosX -= mVelX;
+		}
 
-	mColliders[0].x = mPosX;
-	mColliders[0].y = mPosY;
+		mPosY += mVelY;
+		if (mPosY < 0 || mPosY + DOT_HEIGHT > LEVEL_HEIGHT) {
+			mPosY -= mVelY;
+		}
+	} else { // Stay in bounds of screen
+		mPosX += mVelX;
+		// Too far, move back
+		if (mPosX < 0 || mPosX + DOT_WIDTH > SCREEN_WIDTH) {
+			mPosX -= mVelX;
+		}
+
+		mPosY += mVelY;
+		if (mPosY < 0 || mPosY + DOT_HEIGHT > SCREEN_HEIGHT) {
+			mPosY -= mVelY;
+		}
+
+		mColliders[0].x = mPosX;
+		mColliders[0].y = mPosY;
+	}
 }
 
 // Move while checking that there is no collision with the given rectangle
@@ -200,6 +225,10 @@ void Dot::move(SDL_Rect& square, Circle& circle) {
 
 void Dot::render(SDL_Renderer* renderer, LTexture* texture_ptr) {
 	texture_ptr->render(renderer, mPosX - mCircleCollider.r, mPosY - mCircleCollider.r);
+}
+
+void Dot::render(SDL_Renderer* renderer, LTexture* texture_ptr, int camX, int camY) {
+	texture_ptr->render(renderer, mPosX - camX, mPosY - camY);
 }
 
 // Reset the position of each collider for the dot's new position

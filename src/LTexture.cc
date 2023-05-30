@@ -36,8 +36,9 @@ bool LTexture::loadFromFile(std::string path, SDL_Renderer* renderer) {
 
 	// Color key image
 	// SetColorKey(surface, bool enable color key, pixel to color with)
-	// This maps cyan with max blue and green
-	SDL_SetColorKey(loadedSurface, SDL_TRUE, SDL_MapRGB(loadedSurface->format, 0, 0xff, 0xff));
+	// Original color_key tutorial maps cyan with max blue and green
+	// Adjusted to be white with everything max
+	SDL_SetColorKey(loadedSurface, SDL_TRUE, SDL_MapRGB(loadedSurface->format, 0xff, 0xff, 0xff));
 
 	newTexture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
 	if (newTexture == NULL) {

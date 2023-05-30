@@ -22,7 +22,7 @@ class Dot {
 		Dot(int x, int y);
 		void handleEvent(SDL_Event&);
 		// Move with no collision
-		void move();
+		void move(bool level);
 
 		// Move with rectangles of collision
 		void move(SDL_Rect&, bool checkCollision(SDL_Rect, SDL_Rect));
@@ -35,9 +35,13 @@ class Dot {
 		void move(SDL_Rect&, Circle&);
 
 		void render(SDL_Renderer*, LTexture*);
+		// Render relative to a camera
+		void render(SDL_Renderer*, LTexture*, int, int);
 
+		// Getters
+		int getPosX();
+		int getPosY();
 		std::vector<SDL_Rect>& getColliders();
-
 		Circle& getCircularCollider();
 
 	private:

@@ -2,7 +2,6 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 #include <string>
-#include <sstream>
 #include <cstdio>
 #include <cmath>
 #include <iostream>
@@ -10,6 +9,8 @@
 #include "LTexture.hh"
 #include "Dot.hh"
 
+#define LEVEL_WIDTH (1280)
+#define LEVEL_HEIGHT (960)
 #define SCREEN_WIDTH (640)
 #define SCREEN_HEIGHT (480)
 #define TICKS_PER_FRAME (1000 / 60)
@@ -58,9 +59,14 @@ bool init(SDL_Window** window, SDL_Renderer** renderer) {
 	return true;
 }
 
-bool loadMedia(LTexture* texture, SDL_Renderer* renderer) {
-	*texture = LTexture();
-	if (!texture->loadFromFile("images/dot.bmp", renderer)) {
+bool loadMedia(LTexture* textures, SDL_Renderer* renderer) {
+	textures[0] = LTexture();
+	if (!textures[0].loadFromFile("images/dot.bmp", renderer)) {
+		return false;
+	}
+
+	textures[1] = LTexture();
+	if (!textures[1].loadFromFile("images/bg.png", renderer)) {
 		return false;
 	}
 
@@ -87,32 +93,57 @@ int main(int argc, char** argv) {
 	SDL_Window* window = NULL;
 	SDL_Renderer* renderer = NULL;
 
-	LTexture texture;
+	LTexture textures[2];
 
 	if (!init(&window, &renderer)) {
 		return -1;
 	}
-	if (!loadMedia(&texture, renderer)) {
+	if (!loadMedia(textures, renderer)) {
 		return -1;
 	}
 
 	SDL_Event e;
 	bool quit = false;
 	Dot dot;
+
+	// When scrolling have a large image to represent the level
+	// Render only a portion of that image on the screen
+	// Adjust the segment being shown as needed
+
+	// Camera area
+	SDL_Rect camera = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
+
 	while (!quit) {
-		int startTime = SDL_GetTicks(); // Simple way to cap frame rate
+		int startTime = SDL_GetTicks();
 		while (SDL_PollEvent(&e) != 0) {
 			if (e.type == SDL_QUIT) {
 				quit = true;
 			}
 			dot.handleEvent(e);
 		}
-		dot.move(false);
+		dot.move(true); // Move Dot
+
+		// Adjust camera to be centered around dot
+		camera.x = (dot.getPosX() + Dot::DOT_WIDTH / 2) - SCREEN_WIDTH / 2;
+		camera.y = (dot.getPosY() + Dot::DOT_HEIGHT / 2) - SCREEN_HEIGHT / 2;
+
+		// Adjust camera bounds if needed
+		if (camera.x < 0) {
+			camera.x = 0;
+		} else if (camera.x > LEVEL_WIDTH - camera.w) {
+			camera.x = LEVEL_WIDTH - camera.w;
+		}
+		if (camera.y < 0) {
+			camera.y = 0;
+		} else if (camera.y > LEVEL_HEIGHT - camera.h) {
+			camera.y = LEVEL_HEIGHT - camera.h;
+		}
 
 		SDL_SetRenderDrawColor(renderer, 0xff, 0xff, 0xff, 0xff);
 		SDL_RenderClear(renderer);
 	
-		dot.render(renderer, &texture);
+		textures[1].render(renderer, 0, 0, &camera); // Render level image
+		dot.render(renderer, textures, camera.x, camera.y);
 
 		SDL_RenderPresent(renderer);
 
@@ -126,6 +157,6 @@ int main(int argc, char** argv) {
 		}
 	}
 
-	closeSDL(&window, &renderer, &texture, 1);
+	closeSDL(&window, &renderer, textures, 2);
 	return 0;
 }
