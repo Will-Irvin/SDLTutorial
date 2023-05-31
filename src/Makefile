@@ -35,8 +35,9 @@ TUT29= circ_collision
 TUT30= scrolling
 TUT31= inf_scrolling
 TUT32= text_inp
+TUT33= file_io
 
-TUTALL= $(TUT1) $(TUT2) $(TUT4) $(TUT5) $(TUT6) $(TUT7) $(TUT8) $(TUT9) $(TUT10) $(TUT11) $(TUT12) $(TUT13) $(TUT14) $(TUT15) $(TUT16) $(TUT17) $(TUT18) $(TUT19) $(TUT21) $(TUT22) $(TUT23) $(TUT24) $(TUT25) $(TUT26) $(TUT27) $(TUT28) $(TUT29) $(TUT30) $(TUT31) $(TUT32)
+TUTALL= $(TUT1) $(TUT2) $(TUT4) $(TUT5) $(TUT6) $(TUT7) $(TUT8) $(TUT9) $(TUT10) $(TUT11) $(TUT12) $(TUT13) $(TUT14) $(TUT15) $(TUT16) $(TUT17) $(TUT18) $(TUT19) $(TUT21) $(TUT22) $(TUT23) $(TUT24) $(TUT25) $(TUT26) $(TUT27) $(TUT28) $(TUT29) $(TUT30) $(TUT31) $(TUT32) $(TUT33)
 
 all: $(TUTALL)
 
@@ -193,6 +194,12 @@ $(TUT32): $(TUT32).o $(LTEXT).o $(DOT).o
 $(TUT32).o: $(TUT32).cc
 	$(CC) $(CCFLAGS) $(TUT32).cc -c
 
+$(TUT33): $(TUT33).o $(LTEXT).o
+	$(CC) $(CCFLAGS) $(TUT33).o $(LTEXT).o $(LINKER) -o $(TUT33)
+
+$(TUT33).o: $(TUT33).cc
+	$(CC) $(CCFLAGS) $(TUT33).cc -c
+
 $(LTEXT).o: $(LTEXT).cc
 	$(CC) $(CCFLAGS) $(LTEXT).cc -c
 
@@ -206,5 +213,5 @@ clean:
 	rm $(TUTALL) $(TUT11).o $(TUT12).o $(TUT13).o $(TUT14).o $(TUT15).o $(TUT16).o
 	rm $(TUT17).o $(TUT18).o $(TUT19).o $(TUT21).o $(TUT22).o $(TUT23).o $(TUT24).o
 	rm $(TUT25).o $(TUT26).o $(TUT27).o $(TUT28).o $(TUT29).o $(TUT30).o $(TUT31).o
-	rm $(TUT32).o
+	rm $(TUT32).o $(TUT33),o
 	rm $(LTIME).o $(LTEXT).o $(DOT).o
