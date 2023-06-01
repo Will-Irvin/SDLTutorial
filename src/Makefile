@@ -6,6 +6,7 @@ LTIME= LTimer
 LWIN= LWindow
 DOT= Dot
 PAR= Particle
+TIL= Tile
 
 TUT1= hello_SDL
 TUT2= image_on_screen
@@ -42,10 +43,11 @@ TUT35= window_events
 TUT36= multiple_windows
 TUT37= multiple_displays
 TUT38= particles
+TUT39= tiling
 
-TUTALL= $(TUT1) $(TUT2) $(TUT4) $(TUT5) $(TUT6) $(TUT7) $(TUT8) $(TUT9) $(TUT10) $(TUT11) $(TUT12) $(TUT13) $(TUT14) $(TUT15) $(TUT16) $(TUT17) $(TUT18) $(TUT19) $(TUT21) $(TUT22) $(TUT23) $(TUT24) $(TUT25) $(TUT26) $(TUT27) $(TUT28) $(TUT29) $(TUT30) $(TUT31) $(TUT32) $(TUT33) $(TUT35) $(TUT36) $(TUT37) $(TUT38)
+TUTALL= $(TUT1) $(TUT2) $(TUT4) $(TUT5) $(TUT6) $(TUT7) $(TUT8) $(TUT9) $(TUT10) $(TUT11) $(TUT12) $(TUT13) $(TUT14) $(TUT15) $(TUT16) $(TUT17) $(TUT18) $(TUT19) $(TUT21) $(TUT22) $(TUT23) $(TUT24) $(TUT25) $(TUT26) $(TUT27) $(TUT28) $(TUT29) $(TUT30) $(TUT31) $(TUT32) $(TUT33) $(TUT35) $(TUT36) $(TUT37) $(TUT38) $(TUT39)
 
-all: $(TUTALL)
+all: $(TIL).o $(TUTALL)
 
 $(TUT1): $(TUT1).cc
 	$(CC) $(CCFLAGS) $(TUT1).cc $(LINKER) -o $(TUT1)
@@ -230,6 +232,12 @@ $(TUT38): $(TUT38).o $(LTEXT).o $(PAR).o
 $(TUT38).o: $(TUT38).cc
 	$(CC) $(CCFLAGS) $(TUT38).cc -c
 
+$(TUT39): $(TUT39).o $(LTEXT).o $(TIL).o
+	$(CC) $(CCFLAGS) $(TUT39).o $(LTEXT).o $(TIL).o $(LINKER) -o $(TUT39)
+
+$(TUT39).o: $(TUT39).cc
+	$(CC) $(CCFLAGS) $(TUT39).cc -c
+
 $(LTEXT).o: $(LTEXT).cc
 	$(CC) $(CCFLAGS) $(LTEXT).cc -c
 
@@ -244,6 +252,9 @@ $(LWIN).o: $(LWIN).cc
 
 $(PAR).o: $(PAR).cc
 	$(CC) $(CCFLAGS) $(PAR).cc -c
+
+$(TIL).o: $(TIL).cc
+	$(CC) $(CCFLAGS) $(TIL).cc -c
 
 clean:
 	rm $(TUTALL) *.o
