@@ -5,6 +5,7 @@ LTEXT= LTexture
 LTIME= LTimer
 LWIN= LWindow
 DOT= Dot
+PAR= Particle
 
 TUT1= hello_SDL
 TUT2= image_on_screen
@@ -40,8 +41,9 @@ TUT33= file_io
 TUT35= window_events
 TUT36= multiple_windows
 TUT37= multiple_displays
+TUT38= particles
 
-TUTALL= $(TUT1) $(TUT2) $(TUT4) $(TUT5) $(TUT6) $(TUT7) $(TUT8) $(TUT9) $(TUT10) $(TUT11) $(TUT12) $(TUT13) $(TUT14) $(TUT15) $(TUT16) $(TUT17) $(TUT18) $(TUT19) $(TUT21) $(TUT22) $(TUT23) $(TUT24) $(TUT25) $(TUT26) $(TUT27) $(TUT28) $(TUT29) $(TUT30) $(TUT31) $(TUT32) $(TUT33) $(TUT35) $(TUT36) $(TUT37)
+TUTALL= $(TUT1) $(TUT2) $(TUT4) $(TUT5) $(TUT6) $(TUT7) $(TUT8) $(TUT9) $(TUT10) $(TUT11) $(TUT12) $(TUT13) $(TUT14) $(TUT15) $(TUT16) $(TUT17) $(TUT18) $(TUT19) $(TUT21) $(TUT22) $(TUT23) $(TUT24) $(TUT25) $(TUT26) $(TUT27) $(TUT28) $(TUT29) $(TUT30) $(TUT31) $(TUT32) $(TUT33) $(TUT35) $(TUT36) $(TUT37) $(TUT38)
 
 all: $(TUTALL)
 
@@ -222,6 +224,12 @@ $(TUT37): $(TUT37).o $(LTEXT).o $(LWIN).o
 $(TUT37).o: $(TUT37).cc
 	$(CC) $(CCFLAGS) $(TUT37).cc -c
 
+$(TUT38): $(TUT38).o $(LTEXT).o $(PAR).o
+	$(CC) $(CCFLAGS) $(TUT38).o $(LTEXT).o $(PAR).o $(LINKER) -o $(TUT38)
+
+$(TUT38).o: $(TUT38).cc
+	$(CC) $(CCFLAGS) $(TUT38).cc -c
+
 $(LTEXT).o: $(LTEXT).cc
 	$(CC) $(CCFLAGS) $(LTEXT).cc -c
 
@@ -233,6 +241,9 @@ $(DOT).o: $(DOT).cc
 
 $(LWIN).o: $(LWIN).cc
 	$(CC) $(CCFLAGS) $(LWIN).cc -c
+
+$(PAR).o: $(PAR).cc
+	$(CC) $(CCFLAGS) $(PAR).cc -c
 
 clean:
 	rm $(TUTALL) *.o
