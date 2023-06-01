@@ -5,7 +5,7 @@ class LWindow {
 		LWindow();
 		bool init(); // Create window
 		SDL_Renderer* createRenderer(); // Create renderer for window
-		void handleEvent(SDL_Event&, SDL_Renderer* = NULL); // Handle window events
+		void handleEvent(SDL_Event&, SDL_Renderer* = NULL, SDL_Rect* = NULL, Uint32 = -1); // Handle window events
 		void focus(); // Focus on this window
 		void render(); // Render using internal renderer
 		void free(); // Deallocate internals
@@ -21,6 +21,7 @@ class LWindow {
 		SDL_Window* mWindow; // Actual window
 		SDL_Renderer* mRenderer; // Renderer for window
 		Uint32 mWindowID;
+		Uint32 mWindowDisplayID;
 
 		// Dimensions
 		int mWidth;

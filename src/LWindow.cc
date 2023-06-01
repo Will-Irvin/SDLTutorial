@@ -41,6 +41,7 @@ bool LWindow::init() {
 
 	SDL_SetRenderDrawColor(mRenderer, 0xff, 0xff, 0xff, 0xff);
 	mWindowID = SDL_GetWindowID(mWindow); // Grab window ID from SDL
+	mWindowDisplayID = SDL_GetWindowDisplayIndex(mWindow);
 	mShown = true;
 
 	return true;
@@ -67,12 +68,18 @@ void LWindow::free() {
 	mHeight = 0;
 }
 
-void LWindow::handleEvent(SDL_Event& e, SDL_Renderer* renderer) {
+void LWindow::handleEvent(SDL_Event& e, SDL_Renderer* renderer,
+													SDL_Rect* displayBounds, Uint32 totalDisplays) {
+	bool updateCaption = false; // Check if we need to update caption
 	// Check that it's a window event and that it's referring to this window
 	if (e.type == SDL_WINDOWEVENT && e.window.windowID == mWindowID) {
 		// Caption will keep track of mouse and keyboard focus
-		bool updateCaption = false; // Check if we need to update caption
 		switch (e.window.event) {
+			// Window possibly moved to a different display
+			case SDL_WINDOWEVENT_MOVED:
+				mWindowDisplayID = SDL_GetWindowDisplayIndex(mWindow);
+				updateCaption = true;
+				break;
 			// Window shown/hidden
 			case SDL_WINDOWEVENT_SHOWN:
 				mShown = true;
@@ -138,16 +145,57 @@ void LWindow::handleEvent(SDL_Event& e, SDL_Renderer* renderer) {
 		}
 	}
 	// Full screen is done w/ return key
-	else if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_RETURN) {
-		if (mFullScreen) {
-			SDL_SetWindowFullscreen(mWindow, SDL_FALSE);
-			mFullScreen = false;
-		} else {
-			SDL_SetWindowFullscreen(mWindow, SDL_TRUE);
-			mFullScreen = true;
-			mMinimized = false;
+	else if (e.type == SDL_KEYDOWN) {
+		bool switchDisplay = false;
+		switch (e.key.keysym.sym) {
+			case SDLK_RETURN:
+				if (mFullScreen) {
+					SDL_SetWindowFullscreen(mWindow, SDL_FALSE);
+					mFullScreen = false;
+				} else {
+					SDL_SetWindowFullscreen(mWindow, SDL_TRUE);
+					mFullScreen = true;
+					mMinimized = false;
+				}
+				break;
+			case SDLK_UP:
+				if (totalDisplays > 0) {
+					mWindowDisplayID++;
+					switchDisplay = true;
+				}
+				break;
+			case SDLK_DOWN:
+				if (totalDisplays > 0) {
+					if (mWindowDisplayID == 0) {
+						mWindowDisplayID = totalDisplays - 1;
+					} else {
+						mWindowDisplayID--;
+					}
+					switchDisplay = true;
+				}
+				break;
+		}
+
+		if (switchDisplay) {
+			// Bounding index
+			if (mWindowDisplayID >= totalDisplays) {
+				mWindowDisplayID = 0;
+			}
+
+			// Move window to center of the new display
+			SDL_SetWindowPosition(mWindow,
+													  displayBounds[mWindowDisplayID].x + (displayBounds[mWindowDisplayID].w - mWidth) / 2,
+														displayBounds[mWindowDisplayID].y + (displayBounds[mWindowDisplayID].h - mHeight) / 2);
 		}
 	}
+	if (updateCaption) { // Update caption if needed
+		std::stringstream caption;
+		caption << "SDL Tutorial - ID: " << mWindowID << " Display: " << mWindowDisplayID <<
+							 " MouseFocus: " <<(mMouseFocus ? "On" : "Off") << " KeyboardFocus: " <<
+							 (mKeyboardFocus ? "On" : "Off");
+		SDL_SetWindowTitle(mWindow, caption.str().c_str());
+	}
+
 }
 
 // Bring a window back into focus

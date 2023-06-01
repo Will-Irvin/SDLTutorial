@@ -82,7 +82,7 @@ int main(int argc, char** argv) {
 			if (e.type == SDL_QUIT) {
 				quit = true;
 			}
-			window.handleEvent(e, renderer);
+			window.handleEvent(e, renderer, NULL, -1);
 		}
 
 		if (!window.isMinimized()) {
