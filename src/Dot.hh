@@ -1,3 +1,6 @@
+#ifndef DOT
+#define DOT
+
 #include <SDL2/SDL.h>
 #include <vector>
 
@@ -53,3 +56,4 @@ class Dot {
 
 		void shiftColliders();
 };
+#endif

@@ -47,7 +47,7 @@ TUT39= tiling
 
 TUTALL= $(TUT1) $(TUT2) $(TUT4) $(TUT5) $(TUT6) $(TUT7) $(TUT8) $(TUT9) $(TUT10) $(TUT11) $(TUT12) $(TUT13) $(TUT14) $(TUT15) $(TUT16) $(TUT17) $(TUT18) $(TUT19) $(TUT21) $(TUT22) $(TUT23) $(TUT24) $(TUT25) $(TUT26) $(TUT27) $(TUT28) $(TUT29) $(TUT30) $(TUT31) $(TUT32) $(TUT33) $(TUT35) $(TUT36) $(TUT37) $(TUT38) $(TUT39)
 
-all: $(TIL).o $(TUTALL)
+all: $(TUTALL)
 
 $(TUT1): $(TUT1).cc
 	$(CC) $(CCFLAGS) $(TUT1).cc $(LINKER) -o $(TUT1)

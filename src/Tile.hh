@@ -1,3 +1,5 @@
+#ifndef TILE
+#define TILE
 #include <SDL2/SDL.h>
 
 #include "LTexture.hh"
@@ -45,3 +47,4 @@ class TileDot {
 bool checkCollision(SDL_Rect, SDL_Rect);
 bool touchesWall(SDL_Rect box, Tile* tiles[]);
 bool setTiles(Tile *tiles[]);
+#endif

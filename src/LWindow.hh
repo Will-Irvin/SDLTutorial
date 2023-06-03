@@ -1,3 +1,5 @@
+#ifndef LWINDOW
+#define LWINDOW
 #include <SDL2/SDL.h>
 
 class LWindow {
@@ -34,3 +36,4 @@ class LWindow {
 		bool mMinimized;
 		bool mShown;
 };
+#endif

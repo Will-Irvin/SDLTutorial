@@ -1,3 +1,6 @@
+#ifndef PARTICLE
+#define PARTICLE
+
 #include <SDL2/SDL.h>
 
 #include "LTexture.hh"
@@ -29,3 +32,4 @@ class ParticleDot {
 		int mPosX, mPosY;
 		int mVelX, mVelY;
 };
+#endif

@@ -1,3 +1,5 @@
+#ifndef LTIMER
+#define LTIMER
 class LTimer {
 	public:
 		LTimer();
@@ -17,3 +19,4 @@ class LTimer {
 		bool mPaused;
 		bool mStarted;
 };
+#endif
