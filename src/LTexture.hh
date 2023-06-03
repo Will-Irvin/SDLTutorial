@@ -15,9 +15,11 @@ class LTexture {
 
 		bool loadFromFile(std::string, SDL_Renderer*); // Load image into texture
 
-		bool loadPixelsFromFile(std::string, SDL_Renderer*); // Load image into pixel buffer
+		bool loadFromFile(std::string, SDL_Renderer*, SDL_Window*); // Load image into texture using pixel loaders
 
-		bool loadFromPixels(); //Create image from loaded pixels
+		bool loadPixelsFromFile(std::string, SDL_Window*); // Load image into pixel buffer
+
+		bool loadFromPixels(SDL_Renderer*); //Create image from loaded pixels
 
 		bool loadFromRenderedText(std::string, SDL_Color, SDL_Renderer*, TTF_Font*); // Image from font
 
@@ -39,7 +41,7 @@ class LTexture {
 
 		// Pixel getters
 		Uint32* getPixels32();
-		Uint32* getPitch32();
+		Uint32 getPitch32();
 
 	private:
 		SDL_Texture* mTexture;

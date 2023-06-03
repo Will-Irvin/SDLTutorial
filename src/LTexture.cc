@@ -10,6 +10,7 @@
 
 LTexture::LTexture() {
 	mTexture = NULL;
+	mSurfacePixels = NULL;
 	mWidth = -1;
 	mHeight = -1;
 }
@@ -58,6 +59,61 @@ bool LTexture::loadFromFile(std::string path, SDL_Renderer* renderer) {
 	return true;
 }
 
+bool LTexture::loadFromFile(std::string path, SDL_Renderer* renderer,
+														SDL_Window* window) {
+	if (!loadPixelsFromFile(path, window)) {
+		return false;
+	}
+	if (!loadFromPixels(renderer)) {
+		return false;
+	}
+	return true;
+}
+
+// Load pixels path into a formatted surface
+bool LTexture::loadPixelsFromFile(std::string path, SDL_Window* window) {
+	free();
+
+	SDL_Surface* loadedSurface = IMG_Load(path.c_str());
+	if (loadedSurface == NULL) {
+		std::cout << "Unable to load image (" << path << "): " << SDL_GetError() << '\n';
+		return false;
+	}
+	mSurfacePixels = SDL_ConvertSurfaceFormat(loadedSurface, SDL_GetWindowPixelFormat(window), 0);
+	if (mSurfacePixels == NULL) {
+		std::cout << "Unable to convert surface to display format: " << SDL_GetError() << '\n';
+		return false;
+	}
+	mWidth = mSurfacePixels->w;
+	mHeight = mSurfacePixels->h;
+	SDL_FreeSurface(loadedSurface);
+	return true;
+}
+
+// Load a pixel surface into a texture
+bool LTexture::loadFromPixels(SDL_Renderer* renderer) {
+	if (mSurfacePixels == NULL) {
+		std::cout << "No pixels loaded\n";
+		return false;
+	}
+
+	SDL_SetColorKey(mSurfacePixels, SDL_TRUE, SDL_MapRGB(mSurfacePixels->format, 0, 0xff, 0xff));
+
+	// Create texture
+	mTexture = SDL_CreateTextureFromSurface(renderer, mSurfacePixels);
+	if (mTexture == NULL) {
+		std::cout << "Unable to create texture from pixels: " << SDL_GetError() << '\n';
+		return false;
+	}
+
+	mWidth = mSurfacePixels->w;
+	mHeight = mSurfacePixels->h;
+	SDL_FreeSurface(mSurfacePixels);
+	mSurfacePixels = NULL;
+
+	return true;
+}
+	
 /**
  * Create a texture based on TTF using the passed in text, color, and font
  */
@@ -92,6 +148,11 @@ void LTexture::free() {
 		mTexture = NULL;
 		mWidth = -1;
 		mHeight = -1;
+	}
+
+	if (mSurfacePixels != NULL) {
+		SDL_FreeSurface(mSurfacePixels);
+		mSurfacePixels = NULL;
 	}
 }
 
@@ -139,4 +200,25 @@ int LTexture::getWidth() {
 
 int LTexture::getHeight() {
 	return mHeight;
+}
+
+// Pixel info getters
+
+// Getting these allows us to alter an image's pixels before loading it in
+Uint32* LTexture::getPixels32() {
+	Uint32* pixels = NULL;
+	if (mSurfacePixels != NULL) {
+		pixels =  static_cast<Uint32*>(mSurfacePixels->pixels);
+	}
+	return pixels;
+}
+
+// Pitch is divided by 4 to convert bytes into pixels
+// Tells us how the image is stored in memory
+Uint32 LTexture::getPitch32() {
+	Uint32 pitch = 0;
+	if (mSurfacePixels != NULL) {
+		pitch = mSurfacePixels->pitch / 4;
+	}
+	return pitch;
 }

@@ -24,15 +24,15 @@
 #define TOTAL_TILE_SPRITES (12)
 #define TICKS_PER_FRAME (1000 / 60)
 
+enum textureInd {
+	DOTI,
+	TILEI,
+};
+
 bool init(SDL_Window**, SDL_Renderer**);
 bool loadMedia(LTexture*, SDL_Renderer*, Tile* tiles[]);
 bool setTiles(Tile* tiles[]);
 void closeSDL(SDL_Window**, SDL_Renderer**, LTexture*, int, Tile* tiles[]);
-
-enum textureInd {
-	DOT,
-	TILE
-};
 
 // Initialize SDL, Window, Renderer, Image, and TTF
 bool init(SDL_Window** window, SDL_Renderer** renderer) {
@@ -76,11 +76,11 @@ bool init(SDL_Window** window, SDL_Renderer** renderer) {
 
 bool loadMedia(LTexture* textures, SDL_Rect* tileClips,
 							 SDL_Renderer* renderer, Tile* tiles[]) {
-	if (!textures[DOT].loadFromFile("images/dot.bmp", renderer)) {
+	if (!textures[DOTI].loadFromFile("images/dot.bmp", renderer)) {
 		return false;
 	}
 
-	if (!textures[TILE].loadFromFile("images/tiles.png", renderer)) {
+	if (!textures[TILEI].loadFromFile("images/tiles.png", renderer)) {
 		return false;
 	}
 
@@ -114,7 +114,6 @@ bool setTiles(Tile* tiles[]) {
 		std::cout << "Unable to load file\n";
 		return false;
 	}
-
 	for (int i = 0; i < TOTAL_TILES; i++) {
 		int tileType = TILE_RED;
 		map >> tileType;
@@ -195,10 +194,10 @@ int main(int argc, char** argv) {
 		SDL_RenderClear(renderer);
 	
 		for (int i = 0; i < TOTAL_TILES; i++) {
-			tiles[i]->render(renderer, camera, &textures[TILE], tileClips);
+			tiles[i]->render(renderer, camera, &textures[TILEI], tileClips);
 		}
 
-		dot.render(renderer, &textures[DOT], camera);
+		dot.render(renderer, &textures[DOTI], camera);
 
 		SDL_RenderPresent(renderer);
 
