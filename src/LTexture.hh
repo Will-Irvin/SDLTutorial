@@ -41,6 +41,7 @@ class LTexture {
 
 		// Pixel getters
 		Uint32* getPixels32();
+		Uint32 getPixel32(Uint32, Uint32); // Get a specific pixel
 		Uint32 getPitch32();
 
 	private:

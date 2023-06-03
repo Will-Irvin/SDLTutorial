@@ -213,6 +213,16 @@ Uint32* LTexture::getPixels32() {
 	return pixels;
 }
 
+// If pixels exists, do a conversion since they are stored in one dimension
+// to get the desired pixel
+Uint32 LTexture::getPixel32(Uint32 x, Uint32 y) {
+	Uint32* pixels = getPixels32();
+	if (pixels != NULL) {
+		return pixels[y * getPitch32() + x];
+	} else {
+		return 0;
+	}
+}
 // Pitch is divided by 4 to convert bytes into pixels
 // Tells us how the image is stored in memory
 Uint32 LTexture::getPitch32() {

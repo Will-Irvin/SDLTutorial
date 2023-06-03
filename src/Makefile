@@ -45,8 +45,9 @@ TUT37= multiple_displays
 TUT38= particles
 TUT39= tiling
 TUT40= texture_manipulation
+TUT41= bitmap_fonts
 
-TUTALL= $(TUT1) $(TUT2) $(TUT4) $(TUT5) $(TUT6) $(TUT7) $(TUT8) $(TUT9) $(TUT10) $(TUT11) $(TUT12) $(TUT13) $(TUT14) $(TUT15) $(TUT16) $(TUT17) $(TUT18) $(TUT19) $(TUT21) $(TUT22) $(TUT23) $(TUT24) $(TUT25) $(TUT26) $(TUT27) $(TUT28) $(TUT29) $(TUT30) $(TUT31) $(TUT32) $(TUT33) $(TUT35) $(TUT36) $(TUT37) $(TUT38) $(TUT39) $(TUT40)
+TUTALL= $(TUT1) $(TUT2) $(TUT4) $(TUT5) $(TUT6) $(TUT7) $(TUT8) $(TUT9) $(TUT10) $(TUT11) $(TUT12) $(TUT13) $(TUT14) $(TUT15) $(TUT16) $(TUT17) $(TUT18) $(TUT19) $(TUT21) $(TUT22) $(TUT23) $(TUT24) $(TUT25) $(TUT26) $(TUT27) $(TUT28) $(TUT29) $(TUT30) $(TUT31) $(TUT32) $(TUT33) $(TUT35) $(TUT36) $(TUT37) $(TUT38) $(TUT39) $(TUT40) $(TUT41)
 
 all: $(TUTALL)
 
@@ -240,10 +241,16 @@ $(TUT39).o: $(TUT39).cc
 	$(CC) $(CCFLAGS) $(TUT39).cc -c
 
 $(TUT40): $(TUT40).o $(LTEXT).o $(TIL).o
-	$(CC) $(CCFLAGS) $(TUT40).o $(LTEXT).o $(TIL).o $(LINKER) -o $(TUT40)
+	$(CC) $(CCFLAGS) $(TUT40).o $(LTEXT).o $(LINKER) -o $(TUT40)
 
 $(TUT40).o: $(TUT40).cc
 	$(CC) $(CCFLAGS) $(TUT40).cc -c
+
+$(TUT41): $(TUT41).o $(LTEXT).o $(TIL).o
+	$(CC) $(CCFLAGS) $(TUT41).o $(LTEXT).o $(LINKER) -o $(TUT41)
+
+$(TUT41).o: $(TUT41).cc
+	$(CC) $(CCFLAGS) $(TUT41).cc -c
 
 $(LTEXT).o: $(LTEXT).cc
 	$(CC) $(CCFLAGS) $(LTEXT).cc -c
