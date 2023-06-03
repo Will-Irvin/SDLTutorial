@@ -141,6 +141,22 @@ bool LTexture::loadFromRenderedText(std::string text, SDL_Color color,
 	SDL_FreeSurface(textSurface);
 	return true;
 }
+
+bool LTexture::createBlank(int width, int height, SDL_Renderer* renderer) {
+	free();
+
+	// Create uninitialized texture
+	mTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888,
+															 SDL_TEXTUREACCESS_STREAMING, width, height);
+	if (mTexture == NULL) {
+		std::cout << "Unable to create blank texture: " << SDL_GetError() << '\n';
+		return false;
+	}
+	mWidth = width;
+	mHeight = height;
+	return true;
+}
+
 // Free any memory associated with the texture if it exists
 void LTexture::free() {
 	if (mTexture != NULL) {
@@ -213,6 +229,12 @@ Uint32* LTexture::getPixels32() {
 	return pixels;
 }
 
+void LTexture::copyRawPixels32(void* pixels) {
+	if (mRawPixels != NULL) {
+		memcpy(mRawPixels, pixels, mRawPitch * mHeight);
+	}
+}
+
 // If pixels exists, do a conversion since they are stored in one dimension
 // to get the desired pixel
 Uint32 LTexture::getPixel32(Uint32 x, Uint32 y) {
@@ -231,4 +253,27 @@ Uint32 LTexture::getPitch32() {
 		pitch = mSurfacePixels->pitch / 4;
 	}
 	return pitch;
+}
+
+bool LTexture::lockTexture() {
+	if (mRawPixels != NULL) {
+		std::cout << "Texture already locked\n";
+		return false;
+	}
+	if (SDL_LockTexture(mTexture, NULL, &mRawPixels, &mRawPitch) != 0) {
+		std::cout << "Unable to lock texture: " << SDL_GetError() << '\n';
+		return false;
+	}
+	return true;
+}
+
+bool LTexture::unlockTexture() {
+	if (mRawPixels == NULL) {
+		std::cout << "Texture is already unlocked.\n";
+		return false;
+	}
+	SDL_UnlockTexture(mTexture);
+	mRawPixels = NULL;
+	mRawPitch = 0;
+	return true;
 }

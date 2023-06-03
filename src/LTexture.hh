@@ -23,6 +23,8 @@ class LTexture {
 
 		bool loadFromRenderedText(std::string, SDL_Color, SDL_Renderer*, TTF_Font*); // Image from font
 
+		bool createBlank(int, int, SDL_Renderer*); // Create blank texture
+		
 		void free(); // Deallocate texture
 
 		void setColor(Uint8, Uint8, Uint8); // Set color modulation
@@ -44,10 +46,19 @@ class LTexture {
 		Uint32 getPixel32(Uint32, Uint32); // Get a specific pixel
 		Uint32 getPitch32();
 
+		void copyRawPixels32(void*);
+		bool lockTexture();
+		bool unlockTexture();
+
 	private:
 		SDL_Texture* mTexture;
 
 		SDL_Surface* mSurfacePixels;
+
+		// Raw Pixels
+		void* mRawPixels;
+		int mRawPitch;
+
 		int mWidth;
 		int mHeight;
 };
