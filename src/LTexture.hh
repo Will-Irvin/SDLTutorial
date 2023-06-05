@@ -24,6 +24,8 @@ class LTexture {
 		bool loadFromRenderedText(std::string, SDL_Color, SDL_Renderer*, TTF_Font*); // Image from font
 
 		bool createBlank(int, int, SDL_Renderer*); // Create blank texture
+
+		bool createBlank(int, int, SDL_TextureAccess, SDL_Renderer*);
 		
 		void free(); // Deallocate texture
 
@@ -36,6 +38,8 @@ class LTexture {
 		// Render at given point
 		void render(SDL_Renderer*, int, int, SDL_Rect* = NULL, double = 0,
 								SDL_Point* = NULL, SDL_RendererFlip = SDL_FLIP_NONE);
+
+		void setAsRenderTarget(SDL_Renderer*); // Set self as render target
 
 		// Dimension getters
 		int getWidth();

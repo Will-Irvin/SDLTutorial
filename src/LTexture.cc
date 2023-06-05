@@ -157,6 +157,19 @@ bool LTexture::createBlank(int width, int height, SDL_Renderer* renderer) {
 	return true;
 }
 
+bool LTexture::createBlank(int width, int height, SDL_TextureAccess access,
+													 SDL_Renderer* renderer) {
+	free();
+	mTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, access, width, height);
+	if (mTexture == NULL) {
+		std::cout << "Unable to create blank texture: " << SDL_GetError() << '\n';
+		return false;
+	}
+	mWidth = width;
+	mHeight = height;
+	return true;
+}
+
 // Free any memory associated with the texture if it exists
 void LTexture::free() {
 	if (mTexture != NULL) {
@@ -207,6 +220,11 @@ void LTexture::render(SDL_Renderer* renderer, int x, int y, SDL_Rect* clip,
 	// Use clip rectangle as source rectangle to get particular portion of the image
 	// Use RenderCopyEx to rotate the given angle/center/flip as needed
 	SDL_RenderCopyEx(renderer, mTexture, clip, &rect, angle, center, flip);
+}
+
+// Allow given renderer to render to this texture
+void LTexture::setAsRenderTarget(SDL_Renderer* renderer) {
+	SDL_SetRenderTarget(renderer, mTexture);
 }
 
 // Dimension getters
