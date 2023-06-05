@@ -49,8 +49,9 @@ TUT41= bitmap_fonts
 TUT42= texture_stream
 TUT43= texture_render
 TUT44= frame_ind_move
+TUT45= timer_callback
 
-TUTALL= $(TUT1) $(TUT2) $(TUT4) $(TUT5) $(TUT6) $(TUT7) $(TUT8) $(TUT9) $(TUT10) $(TUT11) $(TUT12) $(TUT13) $(TUT14) $(TUT15) $(TUT16) $(TUT17) $(TUT18) $(TUT19) $(TUT21) $(TUT22) $(TUT23) $(TUT24) $(TUT25) $(TUT26) $(TUT27) $(TUT28) $(TUT29) $(TUT30) $(TUT31) $(TUT32) $(TUT33) $(TUT35) $(TUT36) $(TUT37) $(TUT38) $(TUT39) $(TUT40) $(TUT41) $(TUT42) $(TUT43) $(TUT44)
+TUTALL= $(TUT1) $(TUT2) $(TUT4) $(TUT5) $(TUT6) $(TUT7) $(TUT8) $(TUT9) $(TUT10) $(TUT11) $(TUT12) $(TUT13) $(TUT14) $(TUT15) $(TUT16) $(TUT17) $(TUT18) $(TUT19) $(TUT21) $(TUT22) $(TUT23) $(TUT24) $(TUT25) $(TUT26) $(TUT27) $(TUT28) $(TUT29) $(TUT30) $(TUT31) $(TUT32) $(TUT33) $(TUT35) $(TUT36) $(TUT37) $(TUT38) $(TUT39) $(TUT40) $(TUT41) $(TUT42) $(TUT43) $(TUT44) $(TUT45)
 
 all: $(TUTALL)
 
@@ -243,35 +244,41 @@ $(TUT39): $(TUT39).o $(LTEXT).o $(TIL).o
 $(TUT39).o: $(TUT39).cc
 	$(CC) $(CCFLAGS) $(TUT39).cc -c
 
-$(TUT40): $(TUT40).o $(LTEXT).o $(TIL).o
+$(TUT40): $(TUT40).o $(LTEXT).o
 	$(CC) $(CCFLAGS) $(TUT40).o $(LTEXT).o $(LINKER) -o $(TUT40)
 
 $(TUT40).o: $(TUT40).cc
 	$(CC) $(CCFLAGS) $(TUT40).cc -c
 
-$(TUT41): $(TUT41).o $(LTEXT).o $(TIL).o
+$(TUT41): $(TUT41).o $(LTEXT).o
 	$(CC) $(CCFLAGS) $(TUT41).o $(LTEXT).o $(LINKER) -o $(TUT41)
 
 $(TUT41).o: $(TUT41).cc
 	$(CC) $(CCFLAGS) $(TUT41).cc -c
 
-$(TUT42): $(TUT42).o $(LTEXT).o $(TIL).o
+$(TUT42): $(TUT42).o $(LTEXT).o
 	$(CC) $(CCFLAGS) $(TUT42).o $(LTEXT).o $(LINKER) -o $(TUT42)
 
 $(TUT42).o: $(TUT42).cc
 	$(CC) $(CCFLAGS) $(TUT42).cc -c
 
-$(TUT43): $(TUT43).o $(LTEXT).o $(TIL).o
+$(TUT43): $(TUT43).o $(LTEXT).o
 	$(CC) $(CCFLAGS) $(TUT43).o $(LTEXT).o $(LINKER) -o $(TUT43)
 
 $(TUT43).o: $(TUT43).cc
 	$(CC) $(CCFLAGS) $(TUT43).cc -c
 
-$(TUT44): $(TUT44).o $(LTEXT).o $(TIL).o
+$(TUT44): $(TUT44).o $(LTEXT).o $(LTIME).o $(DOT).o
 	$(CC) $(CCFLAGS) $(TUT44).o $(LTEXT).o $(DOT).o $(LTIME).o $(LINKER) -o $(TUT44)
 
 $(TUT44).o: $(TUT44).cc
 	$(CC) $(CCFLAGS) $(TUT44).cc -c
+
+$(TUT45): $(TUT45).o $(LTEXT).o
+	$(CC) $(CCFLAGS) $(TUT45).o $(LTEXT).o $(LINKER) -o $(TUT45)
+
+$(TUT45).o: $(TUT45).cc
+	$(CC) $(CCFLAGS) $(TUT45).cc -c
 
 $(LTEXT).o: $(LTEXT).cc
 	$(CC) $(CCFLAGS) $(LTEXT).cc -c
