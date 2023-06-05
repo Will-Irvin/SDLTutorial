@@ -223,6 +223,33 @@ void Dot::move(SDL_Rect& square, Circle& circle) {
 	}
 }
 
+// Move the dot based on the amount of time that has passed
+void Dot::move(float timeStep) {
+	if (mVelX > 0) {
+		mPosX += DOT_VEL_FRAME_IND * timeStep;
+	} else if (mVelX < 0) {
+		mPosX -= DOT_VEL_FRAME_IND * timeStep;
+	}
+
+	if (mPosX < 0) {
+		mPosX = 0;
+	} else if (mPosX > SCREEN_WIDTH - DOT_WIDTH) {
+		mPosX = SCREEN_WIDTH - DOT_WIDTH;
+	}
+
+	if (mVelY > 0) {
+		mPosY += DOT_VEL_FRAME_IND * timeStep;
+	} else if (mVelY < 0) {
+		mPosY -= DOT_VEL_FRAME_IND * timeStep;
+	}
+
+	if (mPosY < 0) {
+		mPosY = 0;
+	} else if (mPosY > SCREEN_HEIGHT - DOT_HEIGHT) {
+		mPosY = SCREEN_HEIGHT - DOT_HEIGHT;
+	}
+}
+
 void Dot::render(SDL_Renderer* renderer, LTexture* texture_ptr) {
 	texture_ptr->render(renderer, mPosX - mCircleCollider.r, mPosY - mCircleCollider.r);
 }

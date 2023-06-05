@@ -48,8 +48,9 @@ TUT40= texture_manipulation
 TUT41= bitmap_fonts
 TUT42= texture_stream
 TUT43= texture_render
+TUT44= frame_ind_move
 
-TUTALL= $(TUT1) $(TUT2) $(TUT4) $(TUT5) $(TUT6) $(TUT7) $(TUT8) $(TUT9) $(TUT10) $(TUT11) $(TUT12) $(TUT13) $(TUT14) $(TUT15) $(TUT16) $(TUT17) $(TUT18) $(TUT19) $(TUT21) $(TUT22) $(TUT23) $(TUT24) $(TUT25) $(TUT26) $(TUT27) $(TUT28) $(TUT29) $(TUT30) $(TUT31) $(TUT32) $(TUT33) $(TUT35) $(TUT36) $(TUT37) $(TUT38) $(TUT39) $(TUT40) $(TUT41) $(TUT42) $(TUT43)
+TUTALL= $(TUT1) $(TUT2) $(TUT4) $(TUT5) $(TUT6) $(TUT7) $(TUT8) $(TUT9) $(TUT10) $(TUT11) $(TUT12) $(TUT13) $(TUT14) $(TUT15) $(TUT16) $(TUT17) $(TUT18) $(TUT19) $(TUT21) $(TUT22) $(TUT23) $(TUT24) $(TUT25) $(TUT26) $(TUT27) $(TUT28) $(TUT29) $(TUT30) $(TUT31) $(TUT32) $(TUT33) $(TUT35) $(TUT36) $(TUT37) $(TUT38) $(TUT39) $(TUT40) $(TUT41) $(TUT42) $(TUT43) $(TUT44)
 
 all: $(TUTALL)
 
@@ -265,6 +266,12 @@ $(TUT43): $(TUT43).o $(LTEXT).o $(TIL).o
 
 $(TUT43).o: $(TUT43).cc
 	$(CC) $(CCFLAGS) $(TUT43).cc -c
+
+$(TUT44): $(TUT44).o $(LTEXT).o $(TIL).o
+	$(CC) $(CCFLAGS) $(TUT44).o $(LTEXT).o $(DOT).o $(LTIME).o $(LINKER) -o $(TUT44)
+
+$(TUT44).o: $(TUT44).cc
+	$(CC) $(CCFLAGS) $(TUT44).cc -c
 
 $(LTEXT).o: $(LTEXT).cc
 	$(CC) $(CCFLAGS) $(LTEXT).cc -c

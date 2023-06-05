@@ -20,9 +20,11 @@ class Dot {
 
 		// Velocity increment of dot
 		static const int DOT_VEL = 10;
+		static const int DOT_VEL_FRAME_IND = 640;
 
 		Dot();
 		Dot(int x, int y);
+
 		void handleEvent(SDL_Event&);
 		// Move with no collision
 		void move(bool level);
@@ -36,6 +38,9 @@ class Dot {
 		
 		// Move with circular collision
 		void move(SDL_Rect&, Circle&);
+
+		// Move dot independent of number of frames
+		void move(float timeStep);
 
 		void render(SDL_Renderer*, LTexture*);
 		// Render relative to a camera
